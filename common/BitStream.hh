@@ -54,7 +54,7 @@ void write(BitStreamWriter&, std::string const&);
 
 template<typename T>
 void write(BitStreamWriter& stream, const std::vector<T>& v) {
-    write(stream, v.size());
+    write(stream, (uint32_t) v.size());
 
     for (auto& e : v)
         write(stream, e);
@@ -70,7 +70,7 @@ void read(BitStreamReader&, std::string&);
 
 template<typename T>
 void read(BitStreamReader& stream, std::vector<T>& v) {
-    size_t size;
+    uint32_t size;
     read(stream, size);
 
     v.resize(size);

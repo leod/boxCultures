@@ -7,7 +7,7 @@ struct BitStreamReader;
 struct BitStreamWriter;
 
 struct Order {
-    enum Type {
+    enum Type : uint8_t {
         UNDEFINED,
 
         BUILD

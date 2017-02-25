@@ -12,7 +12,7 @@ struct BitStreamReader;
 struct BitStreamWriter;
 
 struct Message {
-    enum Type {
+    enum Type : uint8_t {
         UNDEFINED,
 
         // Messages sent by client

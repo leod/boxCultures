@@ -63,14 +63,14 @@ void BitStreamReader::skip(size_t offset) {
 }
 
 void write(BitStreamWriter& stream, std::string const& str) {
-    write(stream, str.size());
+    write(stream, (uint32_t) str.size());
     stream.writeBytes(
             reinterpret_cast<const uint8_t*>(str.c_str()),
             str.size());
 }
 
 void read(BitStreamReader& stream, std::string& str) {
-    size_t size;
+    uint32_t size;
     read(stream, size);
     str = std::string(size, ' ');
     
