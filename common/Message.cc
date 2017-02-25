@@ -6,35 +6,9 @@
 
 Message::Message(Message::Type type)
     : type(type) {
-    switch (type) { // ugh...
-    case Message::CLIENT_CONNECT:
-        new(&client_connect) Message::ClientConnect;
-        return;
-    case Message::SERVER_TICK:
-        new(&server_tick) Message::ServerTick;
-        return;
-    case Message::SERVER_START:
-        new(&server_start.settings) GameSettings;
-        return;
-    default:
-        return;
-    }
 }
 
 Message::~Message() {
-    switch (type) { // ugh...
-    case Message::CLIENT_CONNECT:
-        client_connect.~ClientConnect();
-        return;
-    case Message::SERVER_TICK:
-        server_tick.~ServerTick();
-        return;
-    case Message::SERVER_START:
-        server_start.~ServerStart();
-        return;
-    default:
-        return;
-    }
 }
 
 ENetPacket *Message::toPacket() const {
