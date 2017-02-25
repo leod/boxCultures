@@ -72,10 +72,15 @@ void write(BitStreamWriter& stream, std::string const& str) {
 void read(BitStreamReader& stream, std::string& str) {
     uint32_t size;
     read(stream, size);
-    str = std::string(size, ' ');
+
+    char* buffer = new char[size+1];
     
     // This might just explode on you.
     stream.readBytes(
-            reinterpret_cast<uint8_t*>(const_cast<char*>(str.c_str())),
+            reinterpret_cast<uint8_t*>(const_cast<char*>(buffer)),
             size);
+
+    buffer[size] = 0;
+
+    str = std::string(buffer);
 }
