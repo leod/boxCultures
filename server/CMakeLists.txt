@@ -1,11 +1,11 @@
-include_directories (${Enet_INCLUDE_DIRS} ${Common_INCLUDE_DIRS})
+include_directories (${Enet_INCLUDE_DIRS} ${Shared_INCLUDE_DIRS})
 
-add_executable (run_server Server.cc)
+add_executable (server main.cc)
 
 IF (WIN32)
-	target_link_libraries (run_server enet winmm ws2_32 common)
+	target_link_libraries (server enet winmm ws2_32 shared)
 ELSE ()
-	target_link_libraries (run_server enet common)
+	target_link_libraries (server enet shared)
 ENDIF ()
 
-add_dependencies (run_server enet common)
+add_dependencies (server enet shared)
