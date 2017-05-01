@@ -1,11 +1,11 @@
-include_directories (${Enet_INCLUDE_DIRS} ${Common_INCLUDE_DIRS})
+include_directories (${Enet_INCLUDE_DIRS} ${Shared_INCLUDE_DIRS})
 
-add_executable (game Client.cc Client.hh Main.cc)
+add_executable (game main.cc)
 
 IF (WIN32)
-	target_link_libraries (game enet winmm ws2_32 common)
+	target_link_libraries (game enet winmm ws2_32 shared)
 ELSE ()
-	target_link_libraries (game enet common)
+	target_link_libraries (game enet shared)
 ENDIF ()
 
-add_dependencies (game enet common)
+add_dependencies (game enet shared)
