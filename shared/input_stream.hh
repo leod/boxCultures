@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 #include <cassert>
 
@@ -22,7 +23,7 @@ public:
     virtual ~InputReader();
 
     // This function is called when new input is dispatched
-    virtual void processInput(const T &input) = 0;
+    virtual void process_input(const T &input) = 0;
 };
 
 // A stream holds a list of input readers and a queue of inputs.
@@ -77,7 +78,7 @@ template<typename T>
 void InputStream<T>::dispatch() {
     for (const T &input : inputs)
         for (InputReader<T> *reader : readers)
-            reader->processInput(input);
+            reader->process_input(input);
 
     inputs.clear();
 }
