@@ -8,7 +8,7 @@ public:
         : InputReader<std::string>(stream) {
     }
 
-    void processInput(const std::string &input) {
+    void process_input(const std::string &input) {
         std::cout << input << std::endl;
     }
 };
