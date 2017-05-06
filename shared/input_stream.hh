@@ -13,9 +13,9 @@ class InputStream;
 // from an associated stream
 template<typename T>
 class InputReader {
-    // The stream this reader is registered to.
-    // A reader belongs to exactly one stream through its lifetime.
-    // On destruction, the reader automatically unregisters itself.
+    // The stream this reader is registered to. A reader belongs to exactly one
+    // stream through its lifetime.  On destruction, the reader automatically
+    // unregisters itself from the stream.
     InputStream<T>& stream;
 
 protected:
@@ -24,15 +24,16 @@ protected:
 public:
     virtual ~InputReader();
 
-    // This function is called when new input is dispatched
+    // This function is called when new input is dispatched by the stream
     virtual void process_input(T const& input);
 
-    // Process all queued input in a batch
+    // Process all queued input together. It makes sense to override this
+    // method when handling of inputs in a batch is preferred.
     virtual void process_input(std::vector<T> const& input);
 };
 
-// A stream holds a list of input readers and a queue of inputs.
-// Upon dispatch, readers are notified of new input.
+// A stream holds a list of input readers and a queue of inputs. Upon dispatch,
+// readers are notified of new input.
 template<typename T>
 class InputStream {
     // Registered readers
