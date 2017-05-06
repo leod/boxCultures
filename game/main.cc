@@ -2,11 +2,13 @@
 #include <cereal/types/vector.hpp>
 
 #include "input_stream.hh"
-#include "input_log.hh"
+#include "input_recorder.hh"
+#include "input_player.hh"
 
 #include <cereal/archives/json.hpp>
 
 #include <iostream>
+#include <fstream>
 
 class TestReader : public InputReader<std::string> {
 public:
@@ -22,8 +24,8 @@ public:
 int main(int argc, char const** argv) {
     InputStream<std::string> stream;
 
-    cereal::JSONOutputArchive archive(std::cout);
-    InputLogger<cereal::JSONOutputArchive, std::string> input_logger(archive, stream);
+    std::ofstream file("test.json");
+    InputRecorder<cereal::JSONOutputArchive> input_logger(file, stream);
 
     TestReader reader1(stream);
 

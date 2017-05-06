@@ -9,7 +9,7 @@
 template<typename T>
 class InputStream;
 
-// A reader class that is called whenever new input is dispatched
+// A reader class that is called whenever new input of type T is dispatched
 // from an associated stream
 template<typename T>
 class InputReader {
@@ -18,12 +18,17 @@ class InputReader {
     // On destruction, the reader automatically unregisters itself.
     InputStream<T>& stream;
 
-public:
+protected:
     InputReader(InputStream<T>& stream);
+
+public:
     virtual ~InputReader();
 
     // This function is called when new input is dispatched
-    virtual void process_input(T const& input) = 0;
+    virtual void process_input(T const& input);
+
+    // Process all queued input in a batch
+    virtual void process_input(std::vector<T> const& input);
 };
 
 // A stream holds a list of input readers and a queue of inputs.
@@ -70,12 +75,25 @@ InputReader<T>::~InputReader() {
 }
 
 template<typename T>
+void InputReader<T>::process_input(T const& input) {
+}
+
+template<typename T>
+void InputReader<T>::process_input(std::vector<T> const& input) {
+}
+
+template<typename T>
 void InputStream<T>::write(T const& input) {
     inputs.push_back(input);
 }
 
 template<typename T>
 void InputStream<T>::dispatch() {
+    // Batch processing
+    for (InputReader<T>* reader : readers)
+        reader->process_input(inputs);
+
+    // Individual processing
     for (T const& input : inputs)
         for (InputReader<T>* reader : readers)
             reader->process_input(input);
