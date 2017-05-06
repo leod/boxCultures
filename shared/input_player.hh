@@ -88,7 +88,7 @@ void InputPlayer<Archive>::update() {
             throw std::runtime_error("Invalid stream id in input recording");
 
         // Read input list
-        writers[stream_index].update();
+        writers[stream_index]->update();
 
         // Read next stream id
         archive(stream_id);
