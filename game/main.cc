@@ -24,31 +24,52 @@ public:
 int main(int argc, char const** argv) {
     InputStream<std::string> stream;
 
-    std::ofstream file("test.json");
-    InputRecorder<cereal::JSONOutputArchive> input_logger(file, stream);
-
     TestReader reader1(stream);
 
-    stream.write("hello");
-    stream.write("world");
-
-    stream.dispatch();
-
     {
-        TestReader reader2(stream);
+        std::cerr << "Recording" << std::endl;
 
-        stream.write("a");
-        stream.write("b");
+        std::ofstream file("test.json");
+        InputRecorder<cereal::JSONOutputArchive> recorder(file, stream);
+
+        stream.write("hello");
+        stream.write("world");
 
         stream.dispatch();
+
+        {
+            TestReader reader2(stream);
+
+            stream.write("a");
+            stream.write("b");
+
+            stream.dispatch();
+        }
+
+        recorder.finish_frame();
+
+        stream.write("c");
+        stream.dispatch();
+
+        recorder.finish_frame();
     }
 
-    input_logger.finish_frame();
+    {
+        std::cerr << "Playing" << std::endl;
 
-    stream.write("c");
-    stream.dispatch();
+        std::ifstream file("test.json");
+        InputPlayer<cereal::JSONInputArchive> input_player(file, stream);
 
-    input_logger.finish_frame();
+        input_player.update();
+        stream.dispatch();
+
+        std::cerr << "Frame end" << std::endl;
+
+        input_player.update();
+        stream.dispatch();
+
+        std::cerr << "Frame end" << std::endl;
+    }
 
     return 0;
 }
