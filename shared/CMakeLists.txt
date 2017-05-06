@@ -1,6 +1,6 @@
 include_directories (${Enet_INCLUDE_DIRS})
 
-add_library (shared apply_tuple.hh
+add_library (shared tuple_util.hh
                     input_log.hh
                     input_stream.hh
                     message.hh
