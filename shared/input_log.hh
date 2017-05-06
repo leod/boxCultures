@@ -9,11 +9,11 @@ class BufferedInputReader : public InputReader<T> {
     std::vector<T> buffer;
 
 public:
-    BufferedInputReader(InputStream<T> &stream);
+    BufferedInputReader(InputStream<T>& stream);
 
-    void process_input(const T &input);
+    void process_input(T const& input);
 
-    const std::vector<T> &get() const;
+    const std::vector<T>& get() const;
     void clear();
 };
 
@@ -39,7 +39,7 @@ class InputLogger {
     std::tuple<BufferedInputReader<Ts>...> readers;
 
 public:
-    InputLogger(Archive& archive, InputStream<Ts> &... streams);
+    InputLogger(Archive& archive, InputStream<Ts>&... streams);
 
     void finish_frame();
 };
@@ -50,17 +50,17 @@ class LogInputSource : public InputSource {
 };
 
 template<typename T>
-BufferedInputReader<T>::BufferedInputReader(InputStream<T> &stream)
+BufferedInputReader<T>::BufferedInputReader(InputStream<T>& stream)
     : InputReader<T>(stream) {
 }
 
 template<typename T>
-void BufferedInputReader<T>::process_input(const T &input) {
+void BufferedInputReader<T>::process_input(T const& input) {
     buffer.push_back(input);
 }
 
 template<typename T>
-const std::vector<T> &BufferedInputReader<T>::get() const {
+const std::vector<T>& BufferedInputReader<T>::get() const {
     return buffer;
 }
 
@@ -70,7 +70,7 @@ void BufferedInputReader<T>::clear() {
 }
 
 template<typename Archive, typename... Ts>
-InputLogger<Archive, Ts...>::InputLogger(Archive& archive, InputStream<Ts> &... streams) :
+InputLogger<Archive, Ts...>::InputLogger(Archive& archive, InputStream<Ts>&... streams) :
     archive(archive), readers(streams...) {
 }
 

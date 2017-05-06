@@ -16,14 +16,14 @@ class InputReader {
     // The stream this reader is registered to.
     // A reader belongs to exactly one stream through its lifetime.
     // On destruction, the reader automatically unregisters itself.
-    InputStream<T> &stream;
+    InputStream<T>& stream;
 
 public:
-    InputReader(InputStream<T> &stream);
+    InputReader(InputStream<T>& stream);
     virtual ~InputReader();
 
     // This function is called when new input is dispatched
-    virtual void process_input(const T &input) = 0;
+    virtual void process_input(T const& input) = 0;
 };
 
 // A stream holds a list of input readers and a queue of inputs.
@@ -31,7 +31,7 @@ public:
 template<typename T>
 class InputStream {
     // Registered readers
-    std::vector<InputReader<T> *> readers;
+    std::vector<InputReader<T>*> readers;
 
     // Only InputReader can register/unregister
     friend class InputReader<T>;
@@ -41,7 +41,7 @@ class InputStream {
 
 public:
     // Add one input to the end of the queue
-    void write(const T &input);
+    void write(T const& input);
 
     // Dispatch all inputs in order from old to new
     void dispatch();
@@ -55,7 +55,7 @@ public:
 };
 
 template<typename T>
-InputReader<T>::InputReader(InputStream<T> &stream)
+InputReader<T>::InputReader(InputStream<T>& stream)
     : stream(stream) {
     // Register
     stream.readers.push_back(this);
@@ -70,14 +70,14 @@ InputReader<T>::~InputReader() {
 }
 
 template<typename T>
-void InputStream<T>::write(const T &input) {
+void InputStream<T>::write(T const& input) {
     inputs.push_back(input);
 }
 
 template<typename T>
 void InputStream<T>::dispatch() {
-    for (const T &input : inputs)
-        for (InputReader<T> *reader : readers)
+    for (T const& input : inputs)
+        for (InputReader<T>* reader : readers)
             reader->process_input(input);
 
     inputs.clear();

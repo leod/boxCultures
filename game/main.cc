@@ -10,16 +10,16 @@
 
 class TestReader : public InputReader<std::string> {
 public:
-    TestReader(InputStream<std::string> &stream)
+    TestReader(InputStream<std::string>& stream)
         : InputReader<std::string>(stream) {
     }
 
-    void process_input(const std::string &input) {
+    void process_input(const std::string& input) {
         std::cout << input << std::endl;
     }
 };
 
-int main(int argc, const char **argv) {
+int main(int argc, char const** argv) {
     InputStream<std::string> stream;
 
     cereal::JSONOutputArchive archive(std::cout);
